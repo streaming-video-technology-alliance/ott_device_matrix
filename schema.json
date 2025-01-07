@@ -1,108 +1,142 @@
 {
-	"$schema": "http://json-schema.org/draft-07/schema#",
-	"title": "OTT Device Matrix Schema",
-	"type": "array",
-	"items": {
-	  "type": "object",
-	  "required": [
-		"brand",
-		"model",
-		"device_type",
-		"os",
-		"os_version",
-		"year_released",
-		"supported_codecs",
-		"drm_support",
-		"aes_scheme",
-		"security_level",
-		"streaming_formats",
-		"streaming_protocol_versions",
-		"hdr_support",
-		"audio_codec_support"
-	  ],
-	  "properties": {
-		"brand": {
-		  "type": "string"
-		},
-		"model": {
-		  "type": "string"
-		},
-		"device_type": {
-		  "type": "string",
-		  "description": "e.g., 'Smart TV', 'Set-top Box', 'Streaming Stick', 'Gaming Console', 'Mobile'"
-		},
-		"os": {
-		  "type": "string"
-		},
-		"os_version": {
-		  "type": "string"
-		},
-		"year_released": {
-		  "type": "integer"
-		},
-		"supported_codecs": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"drm_support": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"aes_scheme": {
-		  "type": "string"
-		},
-		"security_level": {
-		  "type": "string"
-		},
-		"streaming_formats": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"streaming_protocol_versions": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"hdr_support": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"audio_codec_support": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"notes": {
-		  "type": "string"
-		},
-		"developer_documentation_url": {
-		  "type": "string",
-		  "format": "uri"
-		},
-		"region_availability": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"max_resolution": {
-		  "type": "string",
-		  "description": "e.g., '1080p', '4K UHD'"
-		},
-		"network_connectivity": {
-		  "type": "array",
-		  "items": { "type": "string" },
-		  "description": "e.g., 'WiFi', 'Ethernet'"
-		},
-		"casting_protocols": {
-		  "type": "array",
-		  "items": { "type": "string" },
-		  "description": "e.g., 'Google Cast', 'AirPlay', 'Miracast'"
-		},
-		"voice_assistants": {
-		  "type": "array",
-		  "items": { "type": "string" }
-		},
-		"storefront_url": {
-		  "type": "string",
-		  "format": "uri"
-		}
-	  }
-	}
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "OTT Device Matrix Schema",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": [
+      "brand",
+      "model",
+      "device_type",
+      "os",
+      "os_version",
+      "year_released",
+      "supported_codecs",
+      "drm_support",
+      "aes_scheme",
+      "security_level",
+      "streaming_formats",
+      "streaming_protocol_versions",
+      "audio_codec_support"
+    ],
+    "properties": {
+      "aes_scheme": {
+        "type": "string",
+        "description": "The AES encryption scheme used"
+      },
+      "audio_codec_support": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "List of supported audio codecs"
+      },
+      "brand": {
+        "type": "string",
+        "description": "Device manufacturer or brand name"
+      },
+      "casting_protocols": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Supported casting protocols (e.g., 'Google Cast', 'AirPlay', 'Miracast')"
+      },
+      "dash_version_supported": {
+        "type": "string",
+        "description": "Version of DASH protocol supported"
+      },
+      "developer_documentation_url": {
+        "type": "string",
+        "pattern": "^(https?://.+)?$",
+        "description": "URL to developer documentation"
+      },
+      "device_type": {
+        "type": "string",
+        "description": "Type of device (e.g., 'Smart TV', 'Set-top Box', 'Streaming Stick', 'Gaming Console', 'Mobile')"
+      },
+      "drm_support": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "List of supported DRM systems"
+      },
+      "hdr_support": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Supported HDR formats"
+      },
+      "hls_version_supported": {
+        "type": "string",
+        "description": "Version of HLS protocol supported"
+      },
+      "low_latency_dash_support": {
+        "type": "boolean",
+        "description": "Whether low latency DASH is supported"
+      },
+      "low_latency_hls_support": {
+        "type": "boolean",
+        "description": "Whether low latency HLS is supported"
+      },
+      "max_resolution": {
+        "type": "string",
+        "description": "Maximum supported resolution (e.g., '1080p', '4K UHD')"
+      },
+      "model": {
+        "type": "string",
+        "description": "Device model name"
+      },
+      "network_connectivity": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Supported network connectivity options (e.g., 'WiFi', 'Ethernet')"
+      },
+      "notes": {
+        "type": "string",
+        "description": "Additional notes about the device"
+      },
+      "os": {
+        "type": "string",
+        "description": "Operating system name"
+      },
+      "os_version": {
+        "type": "string",
+        "description": "Operating system version"
+      },
+      "region_availability": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "List of regions where the device is available"
+      },
+      "security_level": {
+        "type": "string",
+        "description": "Security level of the device"
+      },
+      "storefront_url": {
+        "type": "string",
+        "pattern": "^(https?://.+)?$",
+        "description": "URL to device's storefront"
+      },
+      "streaming_formats": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Supported streaming formats"
+      },
+      "streaming_protocol_versions": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Supported streaming protocol versions"
+      },
+      "supported_codecs": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "List of supported video codecs"
+      },
+      "voice_assistants": {
+        "type": "array",
+        "items": { "type": "string" },
+        "description": "Supported voice assistant platforms"
+      },
+      "year_released": {
+        "type": "integer",
+        "description": "Year the device was released"
+      }
+    },
+    "additionalProperties": false
   }
+}
