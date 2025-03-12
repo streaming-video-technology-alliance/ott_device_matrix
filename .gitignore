@@ -47,4 +47,4 @@ pnpm-lock.yaml
 # Keep existing patterns
 .codegptnode_modules
 
-.codegpt
+.codegpt/
