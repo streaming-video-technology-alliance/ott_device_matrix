@@ -10,6 +10,13 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'OTT Device Matrix',
   description: 'A comprehensive matrix of OTT device compatibility information',
+  metadataBase: new URL('https://devices.svta.org'),
+  openGraph: {
+    title: 'OTT Device Matrix',
+    description: 'A comprehensive matrix of OTT device compatibility information',
+    url: 'https://devices.svta.org',
+    siteName: 'OTT Device Matrix'
+  }
 }
 
 export default function RootLayout({

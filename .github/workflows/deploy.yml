@@ -36,21 +36,26 @@ jobs:
       - name: Build project
         run: npm run build
         env:
-          NEXT_PUBLIC_BASE_PATH: '/ott_device_matrix'
+          # No base path needed for custom domain
+          NEXT_PUBLIC_BASE_URL: 'https://devices.svta.org'
 
       - name: Export static files
         run: npm run export
         env:
-          NEXT_PUBLIC_BASE_PATH: '/ott_device_matrix'
+          # No base path needed for custom domain
+          NEXT_PUBLIC_BASE_URL: 'https://devices.svta.org'
 
       - name: Add .nojekyll file
         run: touch out/.nojekyll
         
+      - name: Create CNAME file for custom domain
+        run: echo "devices.svta.org" > out/CNAME
+        
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./out
-
+          path: './out'
+          
   deploy:
     environment:
       name: github-pages
