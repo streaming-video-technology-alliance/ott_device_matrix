@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v13-appRouter'
 import { ThemeRegistry } from '@/components/ThemeRegistry'
+import { GitHubCTA } from '@/components/GitHubCTA'
 import Script from 'next/script'
 import './globals.css'
 
@@ -42,7 +43,10 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <AppRouterCacheProvider>
-          <ThemeRegistry>{children}</ThemeRegistry>
+          <ThemeRegistry>
+            {children}
+            <GitHubCTA />
+          </ThemeRegistry>
         </AppRouterCacheProvider>
       </body>
     </html>

@@ -39,12 +39,6 @@ jobs:
           # No base path needed for custom domain
           NEXT_PUBLIC_BASE_URL: 'https://devices.svta.org'
 
-      - name: Export static files
-        run: npm run export
-        env:
-          # No base path needed for custom domain
-          NEXT_PUBLIC_BASE_URL: 'https://devices.svta.org'
-
       - name: Add .nojekyll file
         run: touch out/.nojekyll
         

@@ -3,12 +3,17 @@
 import { useState, useEffect, useMemo } from 'react'
 import { Device } from '@/types/device'
 import { getDevices } from '@/services/deviceService'
+import { searchDevices } from '@/services/searchService'
 import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid'
 import { DeviceDetail } from './DeviceDetail'
-import { Paper, Box, Typography, CircularProgress } from '@mui/material'
+import { Paper, Box, Typography, CircularProgress, Container, Link } from '@mui/material'
+import { SearchBar } from './SearchBar'
+import GitHubIcon from '@mui/icons-material/GitHub'
 
 export function DeviceMatrix() {
   const [devices, setDevices] = useState<Device[]>([])
+  const [filteredDevices, setFilteredDevices] = useState<Device[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
   const [loading, setLoading] = useState(true)
   const [selectedDevice, setSelectedDevice] = useState<Device | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -20,6 +25,7 @@ export function DeviceMatrix() {
         const data = await getDevices()
         console.log('Devices fetched:', data)
         setDevices(data)
+        setFilteredDevices(data)
       } catch (error) {
         console.error('Error fetching devices:', error)
         setError(error instanceof Error ? error.message : 'Failed to load devices')
@@ -30,6 +36,16 @@ export function DeviceMatrix() {
 
     fetchDevices()
   }, [])
+
+  // Filter devices when search query changes
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setFilteredDevices(devices)
+    } else {
+      const results = searchDevices(devices, searchQuery)
+      setFilteredDevices(results)
+    }
+  }, [searchQuery, devices])
 
   const columns: GridColDef[] = useMemo(
     () => [
@@ -111,11 +127,11 @@ export function DeviceMatrix() {
 
   const rows = useMemo(
     () =>
-      devices.map((device, index) => ({
+      filteredDevices.map((device, index) => ({
         id: index,
         ...device,
       })),
-    [devices]
+    [filteredDevices]
   )
 
   if (loading) {
@@ -135,81 +151,129 @@ export function DeviceMatrix() {
   }
 
   return (
-    <Box sx={{ width: '100%', height: '100%' }}>
-      <Typography
-        variant="h3"
-        component="h1"
-        gutterBottom
-        align="center"
-        sx={{
-          mb: 4,
-          background: 'linear-gradient(45deg, #90caf9 30%, #f48fb1 90%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          fontWeight: 'bold',
-          textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
-        }}
-      >
-        OTT Device Matrix
-      </Typography>
-      <Paper
-        elevation={3}
-        sx={{
-          height: 700,
-          width: '100%',
-          mb: 2,
-          backgroundColor: 'background.paper',
-          borderRadius: 2,
-          overflow: 'hidden',
-        }}
-      >
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          slots={{
-            toolbar: GridToolbar,
-          }}
-          slotProps={{
-            toolbar: {
-              showQuickFilter: true,
-              quickFilterProps: { debounceMs: 500 },
-            },
-          }}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 25,
-              },
-            },
-            sorting: {
-              sortModel: [{ field: 'brand', sort: 'asc' }],
-            },
-          }}
-          pageSizeOptions={[10, 25, 50, 100]}
-          filterMode="server"
-          disableColumnFilter={false}
-          disableColumnSelector={false}
-          disableDensitySelector={false}
-          onRowClick={(params) => setSelectedDevice(devices[params.id as number])}
+    <Container maxWidth="xl">
+      <Box sx={{ width: '100%', height: '100%', mb: 6 }}>
+        <Typography
+          variant="h3"
+          component="h1"
+          gutterBottom
+          align="center"
           sx={{
-            border: 'none',
-            '& .MuiDataGrid-cell': {
-              borderColor: 'rgba(255, 255, 255, 0.12)',
-              cursor: 'pointer',
-            },
-            '& .MuiDataGrid-columnHeaders': {
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              borderColor: 'rgba(255, 255, 255, 0.12)',
-            },
-            '& .MuiDataGrid-row:hover': {
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-            },
+            mb: 4,
+            background: 'linear-gradient(45deg, #90caf9 30%, #f48fb1 90%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            fontWeight: 'bold',
+            textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
           }}
+        >
+          OTT Device Matrix
+        </Typography>
+        
+        <SearchBar 
+          value={searchQuery} 
+          onChange={setSearchQuery} 
+          placeholder="Search devices by brand, model, OS, codecs, DRM, and more..."
+          onClear={() => setSearchQuery('')}
         />
-      </Paper>
-      {selectedDevice && (
-        <DeviceDetail device={selectedDevice} onClose={() => setSelectedDevice(null)} />
-      )}
-    </Box>
+        
+        <Paper
+          elevation={3}
+          sx={{
+            height: 700,
+            width: '100%',
+            mb: 2,
+            backgroundColor: 'background.paper',
+            borderRadius: 2,
+            overflow: 'hidden',
+          }}
+        >
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            slots={{
+              toolbar: GridToolbar,
+            }}
+            slotProps={{
+              toolbar: {
+                showQuickFilter: true,
+                quickFilterProps: { debounceMs: 500 },
+              },
+            }}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 25,
+                },
+              },
+              sorting: {
+                sortModel: [{ field: 'brand', sort: 'asc' }],
+              },
+            }}
+            pageSizeOptions={[10, 25, 50, 100]}
+            filterMode="server"
+            disableColumnFilter={false}
+            disableColumnSelector={false}
+            disableDensitySelector={false}
+            onRowClick={(params) => setSelectedDevice(devices[params.id as number])}
+            sx={{
+              border: 'none',
+              '& .MuiDataGrid-cell': {
+                borderColor: 'rgba(255, 255, 255, 0.12)',
+                cursor: 'pointer',
+              },
+              '& .MuiDataGrid-columnHeaders': {
+                backgroundColor: 'rgba(255, 255, 255, 0.05)',
+                borderColor: 'rgba(255, 255, 255, 0.12)',
+              },
+              '& .MuiDataGrid-row:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+              },
+            }}
+          />
+        </Paper>
+        {selectedDevice && (
+          <DeviceDetail device={selectedDevice} onClose={() => setSelectedDevice(null)} />
+        )}
+        
+        {/* Contribute CTA */}
+        <Box 
+          sx={{ 
+            mt: 4, 
+            p: 3, 
+            textAlign: 'center',
+            border: '1px dashed',
+            borderColor: 'divider',
+            borderRadius: 2,
+            backgroundColor: 'rgba(25, 118, 210, 0.05)',
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Contribute to the Device Matrix
+          </Typography>
+          <Typography variant="body1" paragraph>
+            Help improve this resource by adding new devices or updating existing entries.
+            The contribution process is simple - just update the device_compatibility_matrix.json file and submit a PR!
+          </Typography>
+          <Link 
+            href="https://github.com/krzemienski/ott_device_matrix" 
+            target="_blank"
+            sx={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 1,
+              color: 'primary.main',
+              fontWeight: 'bold',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline',
+              }
+            }}
+          >
+            <GitHubIcon /> Contribute on GitHub
+          </Link>
+        </Box>
+      </Box>
+    </Container>
   )
 }

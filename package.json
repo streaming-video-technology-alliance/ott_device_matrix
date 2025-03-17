@@ -8,8 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "validate": "ajv validate -s schema.json -d device_compatibility_matrix.json",
-    "export": "next build"
+    "validate": "ajv validate -s schema.json -d device_compatibility_matrix.json"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",

@@ -1,29 +1,74 @@
 import React from 'react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { TextField, InputAdornment, Paper, IconButton } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 
 interface SearchBarProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  onClear?: () => void;
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
   value,
   onChange,
   placeholder = 'Search devices...',
+  onClear,
 }) => {
+  const handleClear = () => {
+    onChange('');
+    if (onClear) onClear();
+  };
+
   return (
-    <div className="relative">
-      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-        <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-      </div>
-      <input
-        type="text"
+    <Paper
+      elevation={0}
+      sx={{
+        p: '2px 4px',
+        display: 'flex',
+        alignItems: 'center',
+        width: '100%',
+        border: '1px solid',
+        borderColor: 'divider',
+        borderRadius: 2,
+        mb: 2,
+      }}
+    >
+      <TextField
+        fullWidth
+        placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-primary-500 focus:border-primary-500 sm:text-sm"
-        placeholder={placeholder}
+        variant="standard"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon color="action" />
+            </InputAdornment>
+          ),
+          endAdornment: value ? (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="clear search"
+                onClick={handleClear}
+                edge="end"
+                size="small"
+              >
+                <ClearIcon fontSize="small" />
+              </IconButton>
+            </InputAdornment>
+          ) : null,
+          disableUnderline: true,
+          sx: { px: 1 },
+        }}
+        sx={{
+          '& .MuiInputBase-root': {
+            height: 48,
+          },
+        }}
       />
-    </div>
+    </Paper>
   );
 };
