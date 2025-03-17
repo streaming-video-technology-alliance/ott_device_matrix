@@ -194,6 +194,10 @@ export function DeviceMatrix() {
             disableColumnFilter
             disableColumnSelector
             disableDensitySelector
+            autoHeight={false}
+            slots={{
+              toolbar: null
+            }}
             initialState={{
               pagination: {
                 paginationModel: { page: 0, pageSize: 25 },
