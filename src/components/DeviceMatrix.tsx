@@ -194,9 +194,12 @@ export function DeviceMatrix() {
             disableColumnFilter
             disableColumnSelector
             disableDensitySelector
-            pagination
-            pageSize={25}
-            rowsPerPageOptions={[10, 25, 50, 100]}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 25 },
+              },
+            }}
+            pageSizeOptions={[10, 25, 50, 100]}
             onRowClick={(params) => setSelectedDevice(filteredDevices[params.row.id])}
             sx={{
               '& .MuiDataGrid-cell': {
