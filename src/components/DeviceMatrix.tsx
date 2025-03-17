@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { Device } from '@/types/device'
 import { getDevices } from '@/services/deviceService'
 import { searchDevices } from '@/services/searchService'
-import { DataGrid, GridColDef, GridToolbar } from '@mui/x-data-grid'
+import { DataGrid, GridColDef } from '@mui/x-data-grid'
 import { DeviceDetail } from './DeviceDetail'
 import { Paper, Box, Typography, CircularProgress, Container, Link } from '@mui/material'
 import { SearchBar } from './SearchBar'
@@ -191,43 +191,20 @@ export function DeviceMatrix() {
           <DataGrid
             rows={rows}
             columns={columns}
-            slots={{
-              toolbar: GridToolbar,
-            }}
-            slotProps={{
-              toolbar: {
-                showQuickFilter: true,
-                quickFilterProps: { debounceMs: 500 },
-              },
-            }}
-            initialState={{
-              pagination: {
-                paginationModel: {
-                  pageSize: 25,
-                },
-              },
-              sorting: {
-                sortModel: [{ field: 'brand', sort: 'asc' }],
-              },
-            }}
-            pageSizeOptions={[10, 25, 50, 100]}
-            filterMode="server"
-            disableColumnFilter={false}
-            disableColumnSelector={false}
-            disableDensitySelector={false}
-            onRowClick={(params) => setSelectedDevice(devices[params.id as number])}
+            disableColumnFilter
+            disableColumnSelector
+            disableDensitySelector
+            pagination
+            pageSize={25}
+            rowsPerPageOptions={[10, 25, 50, 100]}
+            onRowClick={(params) => setSelectedDevice(filteredDevices[params.row.id])}
             sx={{
-              border: 'none',
               '& .MuiDataGrid-cell': {
-                borderColor: 'rgba(255, 255, 255, 0.12)',
                 cursor: 'pointer',
               },
+              border: 'none',
               '& .MuiDataGrid-columnHeaders': {
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                borderColor: 'rgba(255, 255, 255, 0.12)',
-              },
-              '& .MuiDataGrid-row:hover': {
-                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                backgroundColor: 'rgba(25, 118, 210, 0.08)',
               },
             }}
           />
