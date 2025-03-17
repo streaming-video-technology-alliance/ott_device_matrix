@@ -235,44 +235,6 @@ export function DeviceMatrix() {
         {selectedDevice && (
           <DeviceDetail device={selectedDevice} onClose={() => setSelectedDevice(null)} />
         )}
-        
-        {/* Contribute CTA */}
-        <Box 
-          sx={{ 
-            mt: 4, 
-            p: 3, 
-            textAlign: 'center',
-            border: '1px dashed',
-            borderColor: 'divider',
-            borderRadius: 2,
-            backgroundColor: 'rgba(25, 118, 210, 0.05)',
-          }}
-        >
-          <Typography variant="h5" gutterBottom>
-            Contribute to the Device Matrix
-          </Typography>
-          <Typography variant="body1" paragraph>
-            Help improve this resource by adding new devices or updating existing entries.
-            The contribution process is simple - just update the device_compatibility_matrix.json file and submit a PR!
-          </Typography>
-          <Link 
-            href="https://github.com/krzemienski/ott_device_matrix" 
-            target="_blank"
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 1,
-              color: 'primary.main',
-              fontWeight: 'bold',
-              textDecoration: 'none',
-              '&:hover': {
-                textDecoration: 'underline',
-              }
-            }}
-          >
-            <GitHubIcon /> Contribute on GitHub
-          </Link>
-        </Box>
       </Box>
     </Container>
   )
